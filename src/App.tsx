@@ -1,9 +1,13 @@
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { CurrencyInput } from "./CurrencyInput";
-import { Round } from "./round";
-import { TEMPLATES, Template } from "./templates";
-import ValuationTable from "./ValuationTable";
+import { CurrencyInput } from "./components/CurrencyInput";
+import { Round } from "./utils/round";
+import { SeriesJoinedDropdown } from "./components/SeriesDropdown";
+import { TemplateDropdown } from "./components/TemplateDropdown";
+import { TEMPLATES } from "./utils/templates";
+import ValuationTable from "./components/ValuationTable";
+import Container from "@mui/material/Container";
 
 const SERIES_LIST = ["preseed", "seed", "A", "B", "C", "D", "E", "F"];
 
@@ -74,7 +78,7 @@ function App() {
 
     // Update the previousJoinedSeries state for the next change
     setPreviousJoinedSeries(joinedSeries);
-  }, [joinedSeries]);
+  }, [joinedSeries, previousJoinedSeries, rounds]);
 
   const calculate = () => {
     let currentOwnershipFraction = initialOwnershipPercentage / 100;
@@ -126,63 +130,64 @@ function App() {
   };
 
   return (
-    <div className="p-8">
-      <label className="block mb-4">
-        Your Initial Equity Percentage (%):
-        <input
-          type="number"
-          value={initialOwnershipPercentage}
-          onChange={(e) =>
-            setInitialOwnershipPercentage(parseFloat(e.target.value))
-          }
-          className="mt-2 p-2 border rounded"
+    <Container maxWidth="lg" sx={{ mt: 10 }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2} direction="column">
+          <Grid item>
+            <Typography variant="h5" component="h1" gutterBottom>
+              Your Initial Equity
+            </Typography>
+            <TextField
+              id="outlined-number"
+              label="Percentage (%)"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              value={initialOwnershipPercentage}
+              onChange={(e) =>
+                setInitialOwnershipPercentage(parseFloat(e.target.value))
+              }
+            />
+          </Grid>
+
+          <Grid item>
+            <Typography variant="h5" component="h1" gutterBottom>
+              Company Details When Joined
+            </Typography>
+            <CurrencyInput
+              label={"Valuation ($):"}
+              value={initialCompanyValuation}
+              onChange={setInitialCompanyValuation}
+              className="mt-2 p-2 border rounded"
+            />
+            <SeriesJoinedDropdown
+              joinedSeries={joinedSeries}
+              setJoinedSeries={setJoinedSeries}
+            />
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Typography variant="h4" component="h1" gutterBottom>
+        Initial Equity Value: {initialOwnershipValue}
+      </Typography>
+
+      <Grid>
+        <TemplateDropdown
+          handleTemplateChange={handleTemplateChange}
+          templates={TEMPLATES}
         />
-      </label>
 
-      <label className="block mb-4">
-        Initial Company Valuation ($):
-        <CurrencyInput
-          value={initialCompanyValuation}
-          onChange={setInitialCompanyValuation} // simplified without needing to parse it again
-          className="mt-2 p-2 border rounded"
-        />
-      </label>
-      <label className="block mb-4">
-        Series Joined:
-        <select
-          value={joinedSeries}
-          onChange={(e) => setJoinedSeries(e.target.value)}
-          className="mt-2 p-2 border rounded">
-          {SERIES_LIST.map((series) => (
-            <option key={series} value={series}>
-              {series.charAt(0).toUpperCase() + series.slice(1)}{" "}
-              {/* This will capitalize the series name */}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <div className="mb-4">Initial Equity Value: {initialOwnershipValue}</div>
-
-      <label className="block mb-4">
-        Choose a Template:
-        <select
-          onChange={handleTemplateChange}
-          className="mt-2 p-2 border rounded">
-          <option value="">Select a template</option>
-          {TEMPLATES.map((template, idx) => (
-            <option key={idx} value={template.name}>
-              {template.name}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <button
-        onClick={addRound}
-        className="mr-4 px-4 py-2 bg-blue-500 text-white rounded">
-        Add Funding Round
-      </button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={addRound}
+          className="mr-4">
+          Add Funding Round
+        </Button>
+      </Grid>
 
       <ValuationTable
         rounds={rounds}
@@ -203,13 +208,20 @@ function App() {
           });
         }}
       />
+
       {rounds.length > 0 && (
-        <div className="mt-8 text-xl font-bold">
-          Your total equity value = $
-          {formatNumber(rounds[rounds.length - 1].equityValue)}
-        </div>
+        <>
+          <Typography variant="h3" component="h1" gutterBottom>
+            Your total equity value = $
+            {formatNumber(rounds[rounds.length - 1].equityValue)}
+          </Typography>
+          <Typography variant="h3" component="h1" gutterBottom>
+            Your total dilution =
+            {`${formatNumber(rounds[rounds.length - 1].totalDilution)}%`}
+          </Typography>
+        </>
       )}
-    </div>
+    </Container>
   );
 }
 

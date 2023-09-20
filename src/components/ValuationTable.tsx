@@ -7,7 +7,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { CurrencyInput } from "./CurrencyInput";
-import { Round } from "./round";
+import { Round } from "../utils/round";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Tooltip } from "@mui/material";
 
 interface ValuationTableProps {
   rounds: Round[];
@@ -33,7 +35,10 @@ export const ValuationTable = ({
               <TableCell>Action</TableCell>
               <TableCell>Series</TableCell>
               <TableCell>Amount Raised ($)</TableCell>
-              <TableCell>Post-Money Valuation ($)</TableCell>
+              <TableCell
+                style={{ borderRight: "1px solid rgba(0, 0, 0, 0.1)" }}>
+                Post-Money Valuation ($)
+              </TableCell>
               <TableCell>Dilution (%)</TableCell>
               <TableCell>Total Equity Value ($)</TableCell>
               <TableCell>Total Dilution (%)</TableCell>
@@ -43,11 +48,13 @@ export const ValuationTable = ({
             {rounds.map((round, index) => (
               <TableRow key={index}>
                 <TableCell>
-                  <span
-                    className="cursor-pointer text-red-500 hover:text-red-700"
-                    onClick={() => handleRemoveRound(index)}>
-                    -
-                  </span>
+                  <Tooltip title="Delete">
+                    <span
+                      className="cursor-pointer text-red-500 hover:text-red-700"
+                      onClick={() => handleRemoveRound(index)}>
+                      <DeleteIcon />
+                    </span>
+                  </Tooltip>
                 </TableCell>
                 <TableCell>Series {round.series}</TableCell>
                 <TableCell>
@@ -58,7 +65,8 @@ export const ValuationTable = ({
                     }}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell
+                  style={{ borderRight: "1px solid rgba(0, 0, 0, 0.1)" }}>
                   <CurrencyInput
                     value={round.valuation}
                     onChange={(newValue) => {

@@ -1,8 +1,10 @@
+import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface CurrencyInputProps {
   value: number;
   onChange: (newValue: number) => void; // expects a number, not an event
+  label?: string;
   className?: string;
 }
 
@@ -10,6 +12,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   value,
   onChange,
   className,
+  label,
 }) => {
   const [displayValue, setDisplayValue] = useState<string>("");
 
@@ -25,11 +28,12 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   };
 
   return (
-    <input
-      type="text"
+    <TextField
+      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
       value={displayValue}
       onChange={handleChange}
       className={className}
+      label={label}
     />
   );
 };
