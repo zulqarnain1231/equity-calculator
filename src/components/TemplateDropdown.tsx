@@ -1,8 +1,6 @@
 import * as React from "react";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Template } from "../utils/templates"; // make sure to import Template type correctly if needed
 
@@ -39,10 +37,20 @@ const NewTemplatesDropDown: React.FC<TemplateDropdownProps> = ({
         fontWeight: 600,
         height: "36px",
         borderRadius: "20px",
+        border: "0px",
         backgroundColor: "#D9D9D9",
         paddingX: "10px",
-        "& .MuiInputBase-root .MuiOutlinedInput-root": {
-          borderRadius: "20px",
+        "&.MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderColor: "transparent",
+          },
+          "&:hover fieldset": {
+            borderColor: "transparent",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "transparent",
+          },
         },
       }}
     >

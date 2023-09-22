@@ -1,15 +1,11 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { CurrencyInput } from "./components/CurrencyInput";
 import { Round } from "./utils/round";
 import { SeriesJoinedDropdown } from "./components/SeriesDropdown";
 import TemplateDropdown from "./components/TemplateDropdown";
 import { TEMPLATES } from "./utils/templates";
 import ValuationTable from "./components/ValuationTable";
-import Container from "@mui/material/Container";
 import ComponentWrapper from "./components/Shared/ComponentWrapper";
-import NewTable from "./components/NewTable";
 import { AiOutlinePlus } from "react-icons/ai";
 import SimpleInput from "./components/SimpleInput";
 
