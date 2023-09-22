@@ -25,15 +25,13 @@ export const NewTable = ({
         {/* table */}
         <div className="w-full flex flex-col items-start justify-start">
           {/* headers */}
-          <div className="w-full grid grid-cols-[.5fr,.5fr,1.5fr,1.5fr,1.5fr,1fr,1fr,1fr] place-items-center gap-6">
+          <div className="w-full grid grid-cols-[.5fr,.5fr,1.5fr,1.5fr,1fr,1fr,1fr] place-items-center gap-6">
             <p></p>
             <p className="text-xs text-black text-center font-normal">Series</p>
             <p className="text-xs text-black text-center font-normal">
               Amount Raised ($)
             </p>
-            <p className="text-xs text-black text-center font-normal">
-              Amount Raised ($)
-            </p>
+
             <p className="text-xs text-black text-center font-normal">
               {" "}
               Post-Money Valuation ($)
@@ -55,7 +53,7 @@ export const NewTable = ({
 
           {rounds.map((round, index) => (
             <div
-              className="w-full grid grid-cols-[.5fr,.5fr,1.5fr,1.5fr,1.5fr,1fr,1fr,1fr] place-items-center gap-6 py-5 border-b-2 border-b-white-secondary"
+              className="w-full grid grid-cols-[.5fr,.5fr,1.5fr,1.5fr,1fr,1fr,1fr] place-items-center gap-6 py-5 border-b-2 border-b-white-secondary"
               key={index}
             >
               <div className="w-full flex items-center justify-center">
@@ -79,7 +77,7 @@ export const NewTable = ({
                   }}
                 />
               </div>
-              <div style={{ borderRight: "1px solid rgba(0, 0, 0, 0.1)" }}>
+              <div>
                 <CurrencyInput
                   value={round.valuation}
                   onChange={(newValue) => {
@@ -87,13 +85,13 @@ export const NewTable = ({
                   }}
                 />
               </div>
-              <div className="w-full flex items-center justify-center text-sm text-black font-medium">
+              <div className="w-full h-full flex items-center justify-center text-sm text-black font-medium">
                 {formatNumber(round.dilution, "%")}
               </div>
-              <div className="w-full flex items-center justify-center text-sm text-black font-medium">
+              <div className="w-full h-full flex items-center justify-center text-sm text-black font-medium">
                 $ {formatNumber(round.equityValue, "")}
               </div>
-              <div className="w-full flex items-center justify-center text-sm text-black font-medium">
+              <div className="w-full h-full flex items-center justify-center text-sm text-black font-medium">
                 {formatNumber(round.totalDilution, "%")}
               </div>
             </div>
