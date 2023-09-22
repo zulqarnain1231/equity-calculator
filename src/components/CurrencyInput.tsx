@@ -30,6 +30,12 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   return (
     <TextField
       inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+      sx={{
+        fontFamily: "Inter",
+        "& .MuiOutlinedInput-root": {
+          borderRadius: "9px",
+        },
+      }}
       value={displayValue}
       onChange={handleChange}
       className={className}

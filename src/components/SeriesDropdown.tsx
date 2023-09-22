@@ -3,7 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
+import OutlinedInput from "@mui/material/OutlinedInput";
 const SERIES_LIST = ["preseed", "seed", "A", "B", "C", "D", "E", "F"];
 
 interface SeriesJoinedDropdownProps {
@@ -20,20 +20,27 @@ export const SeriesJoinedDropdown: React.FC<SeriesJoinedDropdownProps> = ({
   };
 
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel id="series-joined-label">Series Joined</InputLabel>
+    <div className="w-[220px] flex flex-col items-start justify-start gap-2">
+      <p className="text-black text-sm font-normal">Series Joined</p>
       <Select
         labelId="series-joined-label"
         id="series-joined"
         value={joinedSeries}
         onChange={handleChange}
-        label="Series Joined">
+        input={<OutlinedInput />}
+        sx={{
+          width: "100%",
+          height: "92px",
+          fontFamily: "Inter",
+          borderRadius: "9px",
+        }}
+      >
         {SERIES_LIST.map((series) => (
           <MenuItem key={series} value={series}>
             {series.charAt(0).toUpperCase() + series.slice(1)}
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </div>
   );
 };

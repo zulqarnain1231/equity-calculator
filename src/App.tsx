@@ -4,10 +4,14 @@ import "./App.css";
 import { CurrencyInput } from "./components/CurrencyInput";
 import { Round } from "./utils/round";
 import { SeriesJoinedDropdown } from "./components/SeriesDropdown";
-import { TemplateDropdown } from "./components/TemplateDropdown";
+import TemplateDropdown from "./components/TemplateDropdown";
 import { TEMPLATES } from "./utils/templates";
 import ValuationTable from "./components/ValuationTable";
 import Container from "@mui/material/Container";
+import ComponentWrapper from "./components/Shared/ComponentWrapper";
+import NewTable from "./components/NewTable";
+import { AiOutlinePlus } from "react-icons/ai";
+import SimpleInput from "./components/SimpleInput";
 
 const SERIES_LIST = ["preseed", "seed", "A", "B", "C", "D", "E", "F"];
 
@@ -130,98 +134,96 @@ function App() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 10 }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2} direction="column">
-          <Grid item>
-            <Typography variant="h5" component="h1" gutterBottom>
-              Your Initial Equity
-            </Typography>
-            <TextField
-              id="outlined-number"
-              label="Percentage (%)"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
+    <ComponentWrapper style="lg:py-16 py-10 font-inter">
+      <div className="w-full h-full flex flex-col items-center justify-start gap-10 ">
+        {/* equity and dilution */}
+        {rounds.length > 0 && (
+          <div className="w-full flex items-center justify-end gap-10">
+            <div className="flex flex-col items-center justify-start gap-2">
+              <p className="text-black text-sm font-medium">
+                Your Total Equity Value
+              </p>
+              <span className="w-[214px] h-[56px] flex items-center justify-center rounded-[9px] bg-white-secondary text-black text-sm text-center font-medium">
+                $ {formatNumber(rounds[rounds.length - 1].equityValue)}
+              </span>
+            </div>
+            <div className="flex flex-col items-center justify-start gap-2">
+              <p className="text-black text-sm font-medium">
+                Your Total Dilution
+              </p>
+              <span className="w-[214px] h-[56px] flex items-center justify-center rounded-[9px] bg-white-secondary text-black text-sm text-center font-medium">
+                {`${formatNumber(rounds[rounds.length - 1].totalDilution)}%`}
+              </span>
+            </div>
+          </div>
+        )}
+        {/* offer section */}
+        <div className="w-full flex flex-col items-start justify-start gap-6">
+          <h2 className="text-black text-2xl font-medium">Your Offer</h2>
+          <div className="w-full flex items-center justify-start gap-6">
+            <SimpleInput
+              label="Percent Ownership (%)"
               value={initialOwnershipPercentage}
-              onChange={(e) =>
+              setValue={(e: any) =>
                 setInitialOwnershipPercentage(parseFloat(e.target.value))
               }
             />
-          </Grid>
-
-          <Grid item>
-            <Typography variant="h5" component="h1" gutterBottom>
-              Company Details When Joined
-            </Typography>
-            <CurrencyInput
-              label={"Valuation ($):"}
+            <SimpleInput
+              label="Company Valuation ($)"
               value={initialCompanyValuation}
-              onChange={setInitialCompanyValuation}
-              className="mt-2 p-2 border rounded"
+              setValue={setInitialCompanyValuation}
             />
             <SeriesJoinedDropdown
               joinedSeries={joinedSeries}
               setJoinedSeries={setJoinedSeries}
             />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Typography variant="h4" component="h1" gutterBottom>
-        Initial Equity Value: {initialOwnershipValue}
-      </Typography>
-
-      <Grid>
-        <TemplateDropdown
-          handleTemplateChange={handleTemplateChange}
-          templates={TEMPLATES}
+          </div>
+        </div>
+        {/* funding rounds */}
+        <div className="w-full flex flex-col justify-start gap-6 items-start">
+          <h2 className="text-black text-2xl font-medium">Funding Rounds</h2>
+          <div className="w-full flex items-center justify-start gap-6">
+            <p className="text-black text-sm font-normal">Templates:</p>
+            <button className="h-[36px] px-7 flex items-center justify-center rounded-[20px] bg-white-secondary text-sm text-black font-semibold">
+              Biotech Firm
+            </button>
+            <button className="h-[36px] px-7 flex items-center justify-center rounded-[20px] bg-white-secondary text-sm text-black font-semibold">
+              Tech Startup
+            </button>
+            <TemplateDropdown
+              handleTemplateChange={handleTemplateChange}
+              templates={TEMPLATES}
+            />
+          </div>
+        </div>
+        <ValuationTable
+          rounds={rounds}
+          formatNumber={formatNumber}
+          handleRemoveRound={handleRemoveRound}
+          onAmountChange={(index, newValue) => {
+            setRounds((prevRounds) => {
+              const newRounds = [...prevRounds];
+              newRounds[index].amount = newValue;
+              return newRounds;
+            });
+          }}
+          onValuationChange={(index, newValue) => {
+            setRounds((prevRounds) => {
+              const newRounds = [...prevRounds];
+              newRounds[index].valuation = newValue;
+              return newRounds;
+            });
+          }}
         />
 
-        <Button
-          variant="contained"
-          color="primary"
+        <button
           onClick={addRound}
-          className="mr-4">
-          Add Funding Round
-        </Button>
-      </Grid>
-
-      <ValuationTable
-        rounds={rounds}
-        formatNumber={formatNumber}
-        handleRemoveRound={handleRemoveRound}
-        onAmountChange={(index, newValue) => {
-          setRounds((prevRounds) => {
-            const newRounds = [...prevRounds];
-            newRounds[index].amount = newValue;
-            return newRounds;
-          });
-        }}
-        onValuationChange={(index, newValue) => {
-          setRounds((prevRounds) => {
-            const newRounds = [...prevRounds];
-            newRounds[index].valuation = newValue;
-            return newRounds;
-          });
-        }}
-      />
-
-      {rounds.length > 0 && (
-        <>
-          <Typography variant="h3" component="h1" gutterBottom>
-            Your total equity value = $
-            {formatNumber(rounds[rounds.length - 1].equityValue)}
-          </Typography>
-          <Typography variant="h3" component="h1" gutterBottom>
-            Your total dilution =
-            {`${formatNumber(rounds[rounds.length - 1].totalDilution)}%`}
-          </Typography>
-        </>
-      )}
-    </Container>
+          className="h-[67px] w-full flex items-center justify-center gap-2 text-black text-sm font-medium bg-white-off rounded-[9px]"
+        >
+          Add Funding Round <AiOutlinePlus className="text-lg text-black" />
+        </button>
+      </div>
+    </ComponentWrapper>
   );
 }
 

@@ -35,12 +35,6 @@ const NewTemplatesDropDown: React.FC<TemplateDropdownProps> = ({
       label="Choose a Template"
       sx={{
         fontFamily: "Inter",
-        fontSize: "14px",
-        fontWeight: 600,
-        height: "36px",
-        borderRadius: "20px",
-        backgroundColor: "#D9D9D9",
-        paddingX: "10px",
         "& .MuiInputBase-root .MuiOutlinedInput-root": {
           borderRadius: "20px",
         },
